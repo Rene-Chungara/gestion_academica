@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Kanban -->
+        <record id="view_profesor_kanban" model="ir.ui.view">
+            <field name="name">Profesor Kanban</field>
+            <field name="model">gestion_academica.profesor</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_view">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click o_res_partner_kanban o_kanban_card">
+                                <div class="oe_kanban_details card">
+                                    <div class="card-header">
+                                        <h3>
+                                            <field name="name"/>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            <li t-if="record.direccion.raw_value" class="list-group-item">
+                                                <strong>Dirección:</strong> <field name="direccion"/>
+                                            </li>
+                                            <li t-if="record.telefono.raw_value" class="list-group-item">
+                                                <strong>Teléfono:</strong> <field name="telefono"/>
+                                            </li>
+                                            <li t-if="record.correo.raw_value" class="list-group-item">
+                                                <strong>Correo:</strong> <field name="correo"/>
+                                            </li>
+                                            <li t-if="record.sueldo.raw_value" class="list-group-item">
+                                                <strong>Sueldo:</strong> <field name="sueldo"/>
+                                            </li>
+                                            <li t-if="record.sucursal_id.raw_value" class="list-group-item">
+                                                <strong>Sucursal:</strong> <field name="sucursal_id"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a type="open" class="btn btn-primary btn-sm">Ver Detalles</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vista Tree -->
+        <record id="view_profesor_tree" model="ir.ui.view">
+            <field name="name">gestion_academica.profesor.tree</field>
+            <field name="model">gestion_academica.profesor</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Profesor">
+                    <field name="name"/>
+                    <field name="genero" optional="hide"/>
+                    <field name="fecha_nacimiento" optional="hide"/>
+                    <field name="telefono" optional="hide"/>
+                    <field name="correo" optional="hide"/>
+                    <field name="sueldo" optional="hide"/>
+                    <field name="sucursal_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form -->
+        <record id="view_profesor_form" model="ir.ui.view">
+            <field name="name">gestion_academica.profesor.form</field>
+            <field name="model">gestion_academica.profesor</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Profesor">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1" placeholder="Nombre"/>
+                            </h1>
+                        </div>
+                        <div class="oe_button_box" name="button_box"/>
+                        <group>
+                            <group string="Información Personal">
+                                <field name="genero" required="1"/>
+                                <field name="fecha_nacimiento" required="1"/>
+                                <field name="direccion" required="1"/>
+                            </group>
+                            <group string="Contacto y Sueldo">
+                                <field name="correo" required="1"/>
+                                <field name="telefono" required="1"/>
+                                <field name="sueldo" required="1"/>
+                                <field name="sucursal_id" required="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Horarios">
+                                <field name="materia_profesor_ids">
+                                    <tree editable="bottom">
+                                        <field name="materia_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción -->
+        <record model="ir.actions.act_window" id="abrir_profesor_view">
+            <field name="name">Profesor</field>
+            <field name="res_model">gestion_academica.profesor</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <!-- Vistas en Acción -->
+        <record model="ir.actions.act_window.view" id="abrir_profesor_view_form">
+            <field name="act_window_id" ref="abrir_profesor_view"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_profesor_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="abrir_profesor_view_tree">
+            <field name="act_window_id" ref="abrir_profesor_view"/>
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_profesor_tree"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="abrir_profesor_view_kanban">
+            <field name="act_window_id" ref="abrir_profesor_view"/>
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_profesor_kanban"/>
+        </record>
+    </data>
+</odoo>
